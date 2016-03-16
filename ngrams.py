@@ -2,7 +2,8 @@
 import re, codecs, sys, time
 
 
-googlefile = u'googlebooks-rus-all-2gram-20120701-vl'
+
+googlefile = u'googlebooks-rus-all-2gram-20120701-mo'
 arr_word = []
 dictionary = {} # 
 count_line = 0 # How many lines have already been processed
@@ -26,7 +27,7 @@ def frequency():
     #t1 = time.time()
     with codecs.open(googlefile, 'r', 'utf-8') as f:
         for line in f:
-            if u"влажный" in line or u"ВЛАЖНЫЙ" in line:
+            if u"мокрый" in line or u"МОКРЫЙ" in line:
                 #sys.stdout.write(line) # All lines that contain u"влажный"
                 splited_line = re.split("\s|\t", line)
                 count_line += 1
@@ -48,21 +49,21 @@ def frequency():
 
 frequency()
 
+  
+w = codecs.open(u'ngrams_result.txt', 'w', 'utf-8')
+b = list(dictionary.items())
+b.sort(key=lambda item: item[1])
+for item in b:
+    w.write(item[0] +'-'+ str(item[1]) + "\r\n")
+w.close()
 
-dictionary.sort()
-most = 0
-for word in dictionary:
-    while most < 30:
-        sys.stdout.write(word + " " + str(dictionary[word]) + "\r\n")
-        most += 1 
-    
-# Нужно ли вообще записывать словарь в файл? Наверное да ...
-##w = codecs.open(u'ngrams_result.txt', 'w', 'utf-8')
-##for d in dictionary:
-##    w.write(d + "\r\n")
-##w.close()
+##Вопросы:
+##1. Можно ли сделать очистку текста от всего мусора не с помощью регулярных выражений? Как это сделать быстрее?
+##2. Как посчитать число строк в файле? 2000*26, так? (print sum(1 for l in open(googlefile, "r")))
+##3. В каком формате лучше всего сохранить словарь? csv?
+##4. Как можно ускорить работу программы?
 
-##1. Можно ли сделать очистку текста от всего что не кирилица не с помощью регулярных выражений? Как это сделать быстрее?
-##2. прикинуть, какому объёму в мегабайтах соответствует какое количество строк в файле с биграммами, чтобы уметь предсказывать время работы программы.
-##3. 2000 строк обрабатываются примерно за 20 секунд, всего  26274744 строк, значит весь файл будет обрабатываться 72 часа (если я правильно посчитала).
-## Как можно ускорить работу программы?
+##Что сделать
+##1. прикинуть, какому объёму в мегабайтах соответствует какое количество строк в файле с биграммами, чтобы уметь предсказывать время работы программы.
+##2. Лучше в порядке убывания
+

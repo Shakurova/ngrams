@@ -18,19 +18,6 @@ def frequency():
                 #sys.stdout.write(splited_line[1] + " " + str(dictionary[splited_line[1]]) + "\r\n")
             else:
                 dictionary[aa] += int(splited_line[3])
-                #sys.stdout.write(splited_line[1] + " " + str(dictionary[splited_line[1]]) + "\r\n")
-                #if aa[0] != u'' and splited_line[0][1] == u'ADJ':
-                #sys.stdout.write(aa + "\r\n")
-##            count_line += 1
-##            if count_line % 2000 == 0:
-##                print (count_line)
-##            #sys.stdout.write(splited_line[1]+ "\r\n")
-##            if splited_line[1] not in dictionary:
-##                dictionary[splited_line[1]] = 1
-##                #sys.stdout.write(splited_line[1] + " " + str(dictionary[splited_line[1]]) + "\r\n")
-##            else:
-##                dictionary[splited_line[1]] += 1
-##                #sys.stdout.write(splited_line[1] + " " + str(dictionary[splited_line[1]]) + "\r\n")
     return (dictionary)
 
 frequency()

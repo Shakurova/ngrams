@@ -2,8 +2,13 @@
 
 import codecs, re, sys, time
 
-mystem_result = 'v_mystem_word_result.tsv' #файл с разбором из Mystem
-result_lines_selector = 'v_result_lines_selector.tsv' #файл с результатом работы программы lines_selector
+#mystem input output -nwi
+
+adj_root = u'влажн'#Заменить
+#файл с результатом работы программы lines_selector
+result_lines_selector = 'v_result_lines_selector.tsv' #заменить
+#файл с разбором из Mystem
+mystem_result = 'v_mystem_word_result.tsv' #заменить
 
 translit = { u'а':u'a', u'б':u'b', u'в':u'v', u'г':u'g', u'д':u'd',
 					u'е':u'e', u'ж':u'zh', u'з':u'z', u'и':u'i', u'й':u'j',
@@ -42,7 +47,7 @@ def create_dictionary_gram(mystem_result):
 					arrnoun.append(str(i.split('=')[2]) + ',ед')
 				else:
 					arrnoun.append(i.split('=')[2]) #окончительный словарь с разборами сущ
-		if adjgram[0] == 'влажный' and 'S' in list(line2): #только нужное прилагательное и порядок прил сущ
+		if adjgram[0] == 'влажный' and 'S' in list(line2): #только нужное прилагательное и порядок прил сущ #ЗАМЕНИТЬЗАМЕНИТЬ
 			dictionary_gram[keydict] = [[adjgram[0], set(arradj)], [noungram[0].split('=S,')[0], set(arrnoun)]]
 	mystem_result.close()
 	return (dictionary_gram, nouninf) #словарь и начальная форма существительного
@@ -50,10 +55,10 @@ def create_dictionary_gram(mystem_result):
 dictionary_gram, nouninf  = create_dictionary_gram(mystem_result)
 
 #Промежуточная запись в файл словаря dictionary_gram
-#output = codecs.open("dictionary_gram_to_mystem.tsv", "w", "utf-8")
-#for i in dictionary_gram:
-	#output.write(i +'\t'+ str(dictionary_gram[i]) + '\r\n')
-#output.close()
+output = codecs.open(translit[adj_root[0]] + '_dictionary_gram_to_mystem.tsv', 'w', 'utf-8')
+for i in dictionary_gram:
+	output.write(i +'\t'+ str(dictionary_gram[i]) + '\r\n')
+output.close()
 
 
 def agreement(pair): 
@@ -68,11 +73,14 @@ def agreement(pair):
 				return (False)
 
 def create_result_dict(result_lines_selector):
+	''' Получает на вход файл в формате существительное прилагательное  частотность. 
+	Проверяет согласованность прилагательного и существительного.
+	Возвращает словарь с лемматизированным существительным и частотностью. '''
 	result_lines_selector = codecs.open(result_lines_selector, 'r', 'utf-8')
 	result_dict = {}
 	for line in result_lines_selector:
-		splited_line = line.split('\t')#делит на пару и частотность
-		pair = splited_line[0]#пара прил сущ. Можно в одну строчку
+		splited_line = line.split('\t') #делит строку на пару прил сущ и частотность
+		pair = splited_line[0]
 		if agreement(pair):
 			if dictionary_gram[pair][1][0] not in result_dict: 
 				result_dict[dictionary_gram[pair][1][0]] = int(splited_line[1])
@@ -86,7 +94,11 @@ def create_result_dict(result_lines_selector):
 result_dict = create_result_dict(result_lines_selector)	
 
 #финальная запись в файл		
-result = codecs.open("result_dict_output.tsv", "w", "utf-8")
+result = codecs.open(translit[adj_root[0]] + '_result_dict_output.tsv', 'w', 'utf-8')
 for i in sorted(result_dict, key=result_dict.get, reverse=True):
 	result.write(i +'\t'+ str(result_dict[i]) + '\r\n')
 result.close()
+
+#Проблемы с частотностью из-за лемматизации и чего-нибудь еще (например, лапка)
+#Отбросить биграммы, где второе слово - явно какой-то мусор
+#в словаре разборов оставлять только те, где сущ

@@ -2,8 +2,8 @@
 
 import codecs, re, sys, time
 
-googlefile = u'googlebooks-rus-all-2gram-20120701-vl' #Заменить
-adj_root = u'влажн'#Заменить
+googlefile = u'googlebooks-rus-all-2gram-20120701-mo' #Заменить
+adj_root = u'мокр'#Заменить
 arr = []
 dictionary = {}
 translit = { u'а':u'a', u'б':u'b', u'в':u'v', u'г':u'g', u'д':u'd',
@@ -13,6 +13,8 @@ translit = { u'а':u'a', u'б':u'b', u'в':u'v', u'г':u'g', u'д':u'd',
 					u'ф':u'f', u'х':u'h', u'ц':u'ts', u'ч':u'ch', u'ш':u'sh',
 					u'щ':u'sch', u'ь':u'', u'ы':u'y', u'ъ':u'', u'э':u'e',
 					u'ю':u'yu', u'я':u'ya' }
+					
+trash = [u'«', u'»', u'_NOUN_', u',', u'.', u'!', u')', u'*', u'"', u':', u'-', u'--', u';', u'...', u'?',  u'(']
 
 def lines_selector(googlefile):
 	''' Получает на вход название файла, содержащего биграммы из google ngrams, год, количество вхождений, число книг в этот год.
@@ -20,7 +22,7 @@ def lines_selector(googlefile):
 	count_line = 0 # Количество обработанных строк
 	f = codecs.open(googlefile, 'r', 'utf-8')
 	for line in f:
-		if u'влажн' in line:#Заменить
+		if u'мокр' in line:#Заменить
 			if u'ADJ' in line:
 				if u'NOUN' in line:
 					#sys.stdout.write(line) # Строки, содержащие корень нужного прилагательного
@@ -31,12 +33,12 @@ def lines_selector(googlefile):
 	f.close()
 	return (arr)
 
-def selected_lines_writer(arr):
+def frequency(arr):
 	''' Получает на вход массив строк, содержащих нужное прилагательное.
 	Проверяет порядок слов (прилагательное существительное). 
 	Создает словарь dictionary, где ключи - существительное прилагательное, а значения - частотность'''
 	for line in arr:
-		if '_NOUN_' not in line: #очистка
+		if line.split()[1].split('_')[0].isalpha() and line.split()[1].split('_')[0] not in trash:
 			splited_line = line.split()
 			pair_adj_noun = splited_line[0].split('_')[0] + ' ' + splited_line[1].split('_')[0]
 			if splited_line[0].split('_')[1] == 'ADJ': #проверка порядка слов
@@ -47,7 +49,7 @@ def selected_lines_writer(arr):
 	return (dictionary)
 	
 arr = lines_selector(googlefile)
-dictionary = selected_lines_writer(arr)	
+dictionary = frequency(arr)	
 
 ##Запись в файл result_lines_selector.tsv строк в формате " прилагательное существительное число вхождений" (отсортированно)
 w = codecs.open(translit[adj_root[0]] + '_result_lines_selector.tsv', 'w', 'utf-8')

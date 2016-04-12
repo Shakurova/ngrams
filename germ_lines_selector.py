@@ -16,8 +16,8 @@ def lines_selector(googlefile):
 	count_line = 0 # Количество обработанных строк
 	f = codecs.open(googlefile, 'r', 'utf8')#, 'utf-8'
 	for line in f:
-		#line = line.encode('utf-8')#только для немецкого
-		if u'nass' in line or u'naß' in line: #Заменить Здесь в английском отличается от русского #это именно нужное прил а не его дериваты
+		#line = line.encode('utf-8')#???
+		if u'nass' in line or u'naß' in line: #Заменить
 			if u'ADJ' in line:
 				if u'NOUN' in line:
 					sys.stdout.write(line) # Строки, содержащие корень нужного прилагательного

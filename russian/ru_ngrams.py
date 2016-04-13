@@ -4,12 +4,6 @@ import codecs, re, sys, time
 
 #mystem input output -nwi
 
-adj_root = u'влажн'#Заменить
-#файл с результатом работы программы lines_selector
-result_lines_selector = 'v_result_lines_selector.tsv' #заменить
-#файл с разбором из Mystem
-mystem_result = 'v_mystem_word_result.tsv' #заменить
-
 translit = { u'а':u'a', u'б':u'b', u'в':u'v', u'г':u'g', u'д':u'd',
 					u'е':u'e', u'ж':u'zh', u'з':u'z', u'и':u'i', u'й':u'j',
 					u'к':u'k', u'л':u'l', u'м':u'm', u'н':u'n', u'о':u'o',
@@ -18,14 +12,21 @@ translit = { u'а':u'a', u'б':u'b', u'в':u'v', u'г':u'g', u'д':u'd',
 					u'щ':u'sch', u'ь':u'', u'ы':u'y', u'ъ':u'', u'э':u'e',
 					u'ю':u'yu', u'я':u'ya' }
 
+adj_root = u'влажный'#Заменить
+adj_root_tr = ''.join([translit[i] for i in list(adj_root)])
+
+result_lines_selector = adj_root_tr + '_result_lines_selector.tsv'
+mystem_result = adj_root_tr + '_mystem_result.tsv'
+				
 def create_dictionary_gram(mystem_result):
 	''' Получает на вход файл с разбором из Mystem.
 	Возвращает словарь dictionary_gram в формате прил сущ	[[прил инф, {разборы прил}], [сущ инф, {разборы сущ}]] и начальную форму сущ.  '''
 	mystem_result = codecs.open(mystem_result, 'r', 'utf-8')
 	arr = [] #массив строк из файла с разбором Mystem
 	dictionary_gram = {} #словарь с разборами прил и сущ
-	for line in mystem_result:
-		arr.append(line.rstrip('\n')) #убирает символ переноса строки
+	arr = [line.rstrip('\n') for line in mystem_result]
+	#for line in mystem_result:
+		#arr.append(line.rstrip('\n')) #убирает символ переноса строки
 	for l in range (0, len(arr)-2, 2):
 		arradj = []
 		arrnoun = []
@@ -47,7 +48,7 @@ def create_dictionary_gram(mystem_result):
 					arrnoun.append(str(i.split('=')[2]) + ',ед')
 				else:
 					arrnoun.append(i.split('=')[2]) #окончительный словарь с разборами сущ
-		if adjgram[0] == 'влажный' and 'S' in list(line2): #только нужное прилагательное и порядок прил сущ #ЗАМЕНИТЬЗАМЕНИТЬ
+		if adjgram[0] == adj_root and 'S' in list(line2): #только нужное прилагательное и порядок прил сущ
 			dictionary_gram[keydict] = [[adjgram[0], set(arradj)], [noungram[0].split('=S,')[0], set(arrnoun)]]
 	mystem_result.close()
 	return (dictionary_gram, nouninf) #словарь и начальная форма существительного
@@ -55,11 +56,10 @@ def create_dictionary_gram(mystem_result):
 dictionary_gram, nouninf  = create_dictionary_gram(mystem_result)
 
 #Промежуточная запись в файл словаря dictionary_gram
-output = codecs.open(translit[adj_root[0]] + '_dictionary_gram_to_mystem.tsv', 'w', 'utf-8')
+output = codecs.open(adj_root_tr + '_dictionary_mystem.tsv', 'w', 'utf-8')
 for i in dictionary_gram:
 	output.write(i +'\t'+ str(dictionary_gram[i]) + '\r\n')
 output.close()
-
 
 def agreement(pair): 
 	''' Получает на вход пару прилагательное существительное.
@@ -94,7 +94,7 @@ def create_result_dict(result_lines_selector):
 result_dict = create_result_dict(result_lines_selector)	
 
 #финальная запись в файл		
-result = codecs.open(translit[adj_root[0]] + '_result_dict_output.tsv', 'w', 'utf-8')
+result = codecs.open(adj_root_tr + '_new_new_result_ngrams.tsv', 'w', 'utf-8')
 for i in sorted(result_dict, key=result_dict.get, reverse=True):
 	result.write(i +'\t'+ str(result_dict[i]) + '\r\n')
 result.close()
@@ -102,3 +102,6 @@ result.close()
 #Проблемы с частотностью из-за лемматизации и чего-нибудь еще (например, лапка)
 #Отбросить биграммы, где второе слово - явно какой-то мусор
 #в словаре разборов оставлять только те, где сущ
+#if __name__ == '__main__':
+    #main()
+#запуск функции main

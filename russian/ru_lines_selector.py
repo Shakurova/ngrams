@@ -2,11 +2,19 @@
 
 import codecs, re, sys, time
 
-googlefile = u'googlebooks-ger-all-2gram-20120701-na' #Заменить
-adj_root = u'nass'#Заменить
+googlefile = u'googlebooks-rus-all-2gram-20120701-mo' #Заменить
 arr = []
 dictionary = {}
+translit = { u'а':u'a', u'б':u'b', u'в':u'v', u'г':u'g', u'д':u'd',
+					u'е':u'e', u'ж':u'zh', u'з':u'z', u'и':u'i', u'й':u'j',
+					u'к':u'k', u'л':u'l', u'м':u'm', u'н':u'n', u'о':u'o',
+					u'п':u'p', u'р':u'r', u'с':u's', u'т':u't', u'у':u'u',
+					u'ф':u'f', u'х':u'h', u'ц':u'ts', u'ч':u'ch', u'ш':u'sh',
+					u'щ':u'sch', u'ь':u'', u'ы':u'y', u'ъ':u'', u'э':u'e',
+					u'ю':u'yu', u'я':u'ya' }
 
+adj_root = u'мокрый'#Заменить
+adj_root_tr = ''.join([translit[i] for i in list(adj_root)])
 					
 trash = [u'«', u'»', u'_NOUN_', u',', u'.', u'!', u')', u'*', u'"', u':', u'-', u'--', u';', u'...', u'?',  u'(']
 
@@ -14,13 +22,12 @@ def lines_selector(googlefile):
 	''' Получает на вход название файла, содержащего биграммы из google ngrams, год, количество вхождений, число книг в этот год.
 	Возвращает массив, состоящий из строк, содержащих корень заданного прилагательного и теги _ADJ и _NOUN. '''
 	count_line = 0 # Количество обработанных строк
-	f = codecs.open(googlefile, 'r', 'utf8')#, 'utf-8'
+	f = codecs.open(googlefile, 'r', 'utf-8')
 	for line in f:
-		#line = line.encode('utf-8')#???
-		if u'nass' in line or u'naß' in line: #Заменить
+		if u'мокр' in line:#Заменить
 			if u'ADJ' in line:
 				if u'NOUN' in line:
-					sys.stdout.write(line) # Строки, содержащие корень нужного прилагательного
+					#sys.stdout.write(line) # Строки, содержащие корень нужного прилагательного
 					arr.append(line)
 					count_line += 1
 					if count_line % 2000 == 0:
@@ -46,17 +53,8 @@ def frequency(arr):
 arr = lines_selector(googlefile)
 dictionary = frequency(arr)	
 
-#УДАЛИТЬ ПОТОМ
-#запись в файл prepfile.tsv строк, содержащих нужное прилагательное
-prepfile = codecs.open('na_nprepfile.tsv', 'w', 'utf-8')	
-for aa in arr:
-		prepfile.write(aa)
-prepfile.close()
-
-
-
 ##Запись в файл result_lines_selector.tsv строк в формате " прилагательное существительное число вхождений" (отсортированно)
-w = codecs.open(adj_root[0] + '_nresult_lines_selector.tsv', 'w', 'utf-8')
+w = codecs.open(adj_root_tr + '_result_lines_selector.tsv', 'w', 'utf-8')
 for i in sorted(dictionary, key=dictionary.get, reverse=True):
 	w.write(i +'\t'+ str(dictionary[i]) + '\r\n')
 w.close()

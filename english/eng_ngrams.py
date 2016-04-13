@@ -10,7 +10,7 @@ lmtzr = WordNetLemmatizer()
 #lmtzr.lemmatize('cars')
 
 adj_root = u'humid'#Заменить
-result_lines_selector = 'h_result_lines_selector.tsv' #Заменить
+result_lines_selector = adj_root + '_result_lines_selector.tsv'
 
 def create_result_dict(result_lines_selector):
 	''' Получает на вход файл в формате существительное прилагательное  частотность. 
@@ -33,7 +33,7 @@ def create_result_dict(result_lines_selector):
 result_dict = create_result_dict(result_lines_selector)	
 
 #Финальная запись в файл		
-result = codecs.open(adj_root[0] + '_result_dict_output.tsv', 'w', 'utf-8')
+result = codecs.open(adj_root + '_result_ngrams.tsv', 'w', 'utf-8')
 for i in sorted(result_dict, key=result_dict.get, reverse=True):
 	result.write(i +'\t'+ str(result_dict[i]) + '\r\n')
 result.close()

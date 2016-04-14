@@ -12,7 +12,7 @@ translit = { u'а':u'a', u'б':u'b', u'в':u'v', u'г':u'g', u'д':u'd',
 					u'щ':u'sch', u'ь':u'', u'ы':u'y', u'ъ':u'', u'э':u'e',
 					u'ю':u'yu', u'я':u'ya' }
 
-adj_root = u'влажный'#Заменить
+adj_root = u'золотой'#Заменить
 adj_root_tr = ''.join([translit[i] for i in list(adj_root)])
 
 result_lines_selector = adj_root_tr + '_result_lines_selector.tsv'
@@ -39,7 +39,7 @@ def create_dictionary_gram(mystem_result):
 			arradj.append(i) #окончительный словарь с разборами  сущ
 		noungram = line2.split('{')[1].split('|')
 		noungram[-1] = noungram[-1][:-1] #убирает '}' из последнего разбора сущ
-		nouninf = noungram[0].split('=S,')[0] #начальная форма сущ
+		#nouninf = noungram[0].split('=S,')[0] #начальная форма сущ
 		for i in noungram:
 			if 'S' in list(line2):
 				if 'мн' in i.split('=')[1].split(','):
@@ -51,9 +51,9 @@ def create_dictionary_gram(mystem_result):
 		if adjgram[0] == adj_root and 'S' in list(line2): #только нужное прилагательное и порядок прил сущ
 			dictionary_gram[keydict] = [[adjgram[0], set(arradj)], [noungram[0].split('=S,')[0], set(arrnoun)]]
 	mystem_result.close()
-	return (dictionary_gram, nouninf) #словарь и начальная форма существительного
+	return (dictionary_gram) #, nouninfсловарь и начальная форма существительного
 
-dictionary_gram, nouninf  = create_dictionary_gram(mystem_result)
+dictionary_gram  = create_dictionary_gram(mystem_result)#, nouninf
 
 #Промежуточная запись в файл словаря dictionary_gram
 output = codecs.open(adj_root_tr + '_dictionary_mystem.tsv', 'w', 'utf-8')
@@ -94,7 +94,7 @@ def create_result_dict(result_lines_selector):
 result_dict = create_result_dict(result_lines_selector)	
 
 #финальная запись в файл		
-result = codecs.open(adj_root_tr + '_new_new_result_ngrams.tsv', 'w', 'utf-8')
+result = codecs.open(adj_root_tr + '_result_ngrams.tsv', 'w', 'utf-8')
 for i in sorted(result_dict, key=result_dict.get, reverse=True):
 	result.write(i +'\t'+ str(result_dict[i]) + '\r\n')
 result.close()

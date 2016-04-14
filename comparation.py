@@ -3,12 +3,12 @@
 import codecs, re, sys, time
 
 file1 = './russian/results/vlazhnyj_result_ngrams.tsv' #Заменить
-file2 = './russian/results/mokryj_result_ngram.tsv' #Заменить
+file2 = './russian/results/syroj_result_ngrams.tsv' #Заменить
 
 adj1 = u'влажный'#Заменить
-adj2 = u'мокрый'#Заменить
+adj2 = u'сырой'#Заменить
 
-adj_root_tr = 'mo_vl'
+adj_root_tr = 'vl_sy'#Заменить
 
 					
 

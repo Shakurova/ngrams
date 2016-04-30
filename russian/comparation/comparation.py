@@ -2,13 +2,13 @@
 
 import codecs, re, sys, time
 
-file1 = './results/zolotoj_result_ngrams.tsv' #Заменить
-file2 = './results/zolotistyj_result_ngrams.tsv' #Заменить
+file1 = 'C:/Users/Елена/Desktop/Курсач/py3_version/russian/results/syroj_gind_f_result_ngrams.tsv' #Заменить
+file2 = 'C:/Users/Елена/Desktop/Курсач/py3_version/russian/results/vlazhnyj_gind_f_result_ngrams.tsv' #Заменить
 
-adj1 = u'zolotoj'#Заменить
-adj2 = u'zolotistyj'#Заменить
+adj1 = u'syroj'#Заменить
+adj2 = u'vlazhnyj'#Заменить
 
-adj_root_tr = 'zo_zo'#Заменить
+adj_root_tr = 'sy_vl'#Заменить
 
 					
 
@@ -37,7 +37,7 @@ f1.close()
 f2.close()
 		
 ##Запись в файл result_lines_selector.tsv строк в формате " прилагательное существительное число вхождений" (отсортированно)
-w = codecs.open('./comparation/' + adj_root_tr + '_result_comparation.csv', 'w', 'utf-8')
+w = codecs.open(adj_root_tr + '_result_comparation.csv', 'w', 'utf-8')
 w.write('noun' + ',' + str(adj1) + ',' + str(adj2) + '\r\n') #+ ',' + 'прил1 // прил2' 
 for noun in result:
 	w.write(noun + ',' + str(dict1[noun]) + ',' + str(dict2[noun]) + '\r\n')# + ',' + str(int(dict1[noun])//int(dict2[noun]))

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import codecs, re, sys, time
+import codecs, re, sys, time, json
 
-#mystem input output -nwi
+#mystem -gind --format json --fixlist _result_lines_selector.tsv _gind_fix_mystem.tsv d СНЯТИЕ ОМОНИМИИ -nwi
 
 translit = { u'а':u'a', u'б':u'b', u'в':u'v', u'г':u'g', u'д':u'd',
 					u'е':u'e', u'ж':u'zh', u'з':u'z', u'и':u'i', u'й':u'j',
@@ -15,9 +15,11 @@ translit = { u'а':u'a', u'б':u'b', u'в':u'v', u'г':u'g', u'д':u'd',
 adj_root = u'золотой'#Заменить
 adj_root_tr = ''.join([translit[i] for i in list(adj_root)])
 
-result_lines_selector = adj_root_tr + '_result_lines_selector.tsv'
-mystem_result = adj_root_tr + '_mystem_result.tsv'
-				
+result_lines_selector = './results/' + adj_root_tr + '_result_lines_selector.tsv'
+mystem_result = './results/' + adj_root_tr + '_gind_fix_mystem.tsv'
+
+#ПРОВЕРКА НАЧАЛЬНОЙ ФОРМЫ КАК ЕЕ ВЫБИРАТЬ АААА	
+
 def create_dictionary_gram(mystem_result):
 	''' Получает на вход файл с разбором из Mystem.
 	Возвращает словарь dictionary_gram в формате прил сущ	[[прил инф, {разборы прил}], [сущ инф, {разборы сущ}]] и начальную форму сущ.  '''
@@ -25,38 +27,60 @@ def create_dictionary_gram(mystem_result):
 	arr = [] #массив строк из файла с разбором Mystem
 	dictionary_gram = {} #словарь с разборами прил и сущ
 	arr = [line.rstrip('\n') for line in mystem_result]
-	#for line in mystem_result:
-		#arr.append(line.rstrip('\n')) #убирает символ переноса строки
 	for l in range (0, len(arr)-2, 2):
-		arradj = []
-		arrnoun = []
-		line1 = arr[l] #строка с прил
-		line2 = arr[l+1] #строка с сущ
-		keydict = line1.split('{')[0] + ' ' + line2.split('{')[0] #пара прил сущ
-		adjgram = line1.split('{')[1].split('=A=')
-		for i in adjgram[1:]:
-			i = ','.join(i[:-1].split(',')[:2]) #оставляет у разбора прил только показатель падежа и числа
-			arradj.append(i) #окончительный словарь с разборами  сущ
-		noungram = line2.split('{')[1].split('|')
-		noungram[-1] = noungram[-1][:-1] #убирает '}' из последнего разбора сущ
-		#nouninf = noungram[0].split('=S,')[0] #начальная форма сущ
-		for i in noungram:
-			if 'S' in list(line2):
-				if 'мн' in i.split('=')[1].split(','):
-					arrnoun.append(str(i.split('=')[2]) + ',мн')
-				elif 'ед' in i.split('=')[1].split(','):
-					arrnoun.append(str(i.split('=')[2]) + ',ед')
+		adjgram = []
+		ngram = []
+		noungram = []
+		line1 = json.loads(arr[l]) #строка с прил
+		line2 = json.loads(arr[l+1]) #строка с сущ
+		#if line2['text']=='мудрецов':
+			#print (str(line1) + ' ' + str(line2))
+		if line1['analysis']!=[] and line2['analysis']!=[]:
+			keydict = line1['text'] + ' ' + line2['text'] #пара прил сущ
+			adjinf = line1['analysis'][0]['lex']
+			nouninf = line2['analysis'][0]['lex']
+			for i in line1['analysis']:
+				if i['gr'][:1] == 'A':
+					arradj = i['gr'].split('=')[1].strip(u'()').split(u'|')
+				#else:
+					#break
+			# for i in line2[u'analysis']:
+				# if i['gr'][:1] == 'S':
+					# arrnoun = i['gr'].split('=')[1].strip(u'()').split(u'|')
+			for i in arradj:
+				if i[:5] == 'устар':
+					i = ','.join(i.split(',')[1:3])#если устар,вин,ед,полн,муж,од
 				else:
-					arrnoun.append(i.split('=')[2]) #окончительный словарь с разборами сущ
-		if adjgram[0] == adj_root and 'S' in list(line2): #только нужное прилагательное и порядок прил сущ
-			dictionary_gram[keydict] = [[adjgram[0], set(arradj)], [noungram[0].split('=S,')[0], set(arrnoun)]]
+					i = ','.join(i.split(',')[:2]) #оставляет у разбора прил только показатель падежа и числа
+				adjgram.append(i) #окончительный словарь с разборами  прил
+			for i in line2['analysis']:
+				if i['gr'][:1] == 'S':
+					arrnoun =i['gr'].split('=')[1].strip(u'()').split(u'|')
+					if 'мн' in i['gr'].split('=')[0].split(','):
+						for a in arrnoun:
+							ngram.append(str(a) + ',мн')
+					elif 'ед' in i['gr'].split('=')[0].split(','):
+						for a in arrnoun:
+							ngram.append(str(a) + ',ед')
+					else:
+						for a in arrnoun:
+							ngram.append(a) #промежуточный словарь с разборами сущ
+			for i in ngram:
+				if i[:5] == 'устар':
+					i = ','.join(i.split(',')[1:3])#если устар,вин,ед,полн,муж,од
+				else:
+					i = ','.join(i.split(',')[:2]) #оставляет у разбора прил только показатель падежа и числа
+				noungram.append(i) #окончительный словарь с разборами  сущ
+			#print (noungram)
+			if adjinf == adj_root: #проверить начальную форму!!!
+				dictionary_gram[keydict] = [[adjinf, set(adjgram)], [nouninf, set(noungram)]]###начальная форма
 	mystem_result.close()
 	return (dictionary_gram) #, nouninfсловарь и начальная форма существительного
 
 dictionary_gram  = create_dictionary_gram(mystem_result)#, nouninf
 
 #Промежуточная запись в файл словаря dictionary_gram
-output = codecs.open(adj_root_tr + '_dictionary_mystem.tsv', 'w', 'utf-8')
+output = codecs.open('./results/' + adj_root_tr + '_gind_f_dictionary_mystem.tsv', 'w', 'utf-8')
 for i in dictionary_gram:
 	output.write(i +'\t'+ str(dictionary_gram[i]) + '\r\n')
 output.close()
@@ -64,13 +88,14 @@ output.close()
 def agreement(pair): 
 	''' Получает на вход пару прилагательное существительное.
 	Возвращает True, если согласуется и False, если нет. '''
-	if pair in dictionary_gram:
+	if pair in dictionary_gram: 
 		for i in dictionary_gram[pair][1][1]:
 			if i in dictionary_gram[pair][0][1]:
 				return (True)
-				pass
+				break###ЭТО НОВОЕ, ЧТО ИСПРАВИЛА + убрала False
 			else:
-				return (False)
+				#print (pair)
+				continue
 
 def create_result_dict(result_lines_selector):
 	''' Получает на вход файл в формате существительное прилагательное  частотность. 
@@ -82,19 +107,24 @@ def create_result_dict(result_lines_selector):
 		splited_line = line.split('\t') #делит строку на пару прил сущ и частотность
 		pair = splited_line[0]
 		if agreement(pair):
+		#if pair in dictionary_gram:
 			if dictionary_gram[pair][1][0] not in result_dict: 
 				result_dict[dictionary_gram[pair][1][0]] = int(splited_line[1])
 			else:
 				result_dict[dictionary_gram[pair][1][0]] += int(splited_line[1])
 		else:
-			continue
+			if pair in dictionary_gram:
+				print (pair)
+			continue	
+		#else:
+			#continue
 	result_lines_selector.close()
 	return (result_dict)
 
 result_dict = create_result_dict(result_lines_selector)	
 
 #финальная запись в файл		
-result = codecs.open(adj_root_tr + '_result_ngrams.tsv', 'w', 'utf-8')
+result = codecs.open('./results/' + adj_root_tr + '_gind_f_result_ngrams.tsv', 'w', 'utf-8')
 for i in sorted(result_dict, key=result_dict.get, reverse=True):
 	result.write(i +'\t'+ str(result_dict[i]) + '\r\n')
 result.close()

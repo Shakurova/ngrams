@@ -2,18 +2,13 @@
 
 import codecs, re, sys, time
 
-# pip install -U textblob-de
-# python -m textblob.download_corpora
+# pip install treetaggerwrapper
 
-from textblob_de import TextBlobDE as TextBlob
-from textblob_de.lemmatizers import PatternParserLemmatizer
-lmtzr = PatternParserLemmatizer()
-#lmtzr.lemmatize("Das ist ein hässliches Auto.")
-#[('das', 'DT'), ('sein', 'VB'), ('ein', 'DT'), ('hässlich', 'JJ'), ('Auto', 'NN')]
+import treetaggerwrapper
+tagger = treetaggerwrapper.TreeTagger(TAGLANG='de')
 
-
-adj_root = u'feucht'#Заменить
-result_lines_selector = adj_root + '_result_lines_selector.tsv'
+adj_root = 'winzig'#Заменить
+result_lines_selector = './results/' + adj_root + '_result_lines_selector.tsv'
 
 def create_result_dict(result_lines_selector):
 	''' Получает на вход файл в формате существительное прилагательное  частотность. 
@@ -25,18 +20,20 @@ def create_result_dict(result_lines_selector):
 		splited_line = line.split('\t') #делит строку на пару прил сущ и частотность
 		adj_noun = splited_line[0]
 		freq = splited_line[1]
-		if lmtzr.lemmatize(adj_noun)[0][0] == 'feucht': #or lmtzr.lemmatize(adj_noun)[0][0] == 'naß'#проверяется лемма прилагательного
-			if lmtzr.lemmatize(adj_noun)[1][0] not in result_dict: 
-				result_dict[lmtzr.lemmatize(adj_noun)[1][0]] = int(splited_line[1])
+		tags = tagger.tag_text(adj_noun)
+		tags2 = treetaggerwrapper.make_tags(tags)
+		if tags2[0][2].split("|")[0] == 'winzig': #проверяется лемма прилагательного
+			if tags2[1][2].split("|")[0] not in result_dict: 
+				result_dict[tags2[1][2].split("|")[0]] = int(splited_line[1])
 			else:
-				result_dict[lmtzr.lemmatize(adj_noun)[1][0]] += int(splited_line[1])
+				result_dict[tags2[1][2].split("|")[0]] += int(splited_line[1])
 	result_lines_selector.close()
 	return (result_dict)
 
 result_dict = create_result_dict(result_lines_selector)	
 
 #Финальная запись в файл		
-result = codecs.open(adj_root + '_result_ngrams.tsv', 'w', 'utf-8')
+result = codecs.open('./results/' + adj_root + '_result_ngrams.tsv', 'w', 'utf-8')
 for i in sorted(result_dict, key=result_dict.get, reverse=True):
 	result.write(i +'\t'+ str(result_dict[i]) + '\r\n')
 result.close()

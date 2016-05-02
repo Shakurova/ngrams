@@ -38,7 +38,7 @@ f2.close()
 		
 ##Запись в файл result_lines_selector.tsv строк в формате " прилагательное существительное число вхождений" (отсортированно)
 w = codecs.open('./comparation/' + adj_root_tr + '_result_comparation.csv', 'w', 'utf-8')
-w.write('существительное' + ',' + str(adj1) + ',' + str(adj2) + '\r\n')
+w.write('noun' + ',' + str(adj1) + ',' + str(adj2) + '\r\n')
 for noun in result:
 	w.write(noun + ',' + str(dict1[noun]) + ',' + str(dict2[noun]) + '\r\n')
 w.close()

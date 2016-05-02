@@ -3,6 +3,7 @@
 List of programs:
 * lines_selector.py
 * new_ngrams.py
+* comparation.py
 
 <b>LINES_SELECTOR:</b>
 
@@ -14,6 +15,7 @@ List of programs:
 
 * frequency -- проверяется порядок слов (прилагательное существительное) и создается словарь <i>dictionary</i>, где ключи - существительное прилагательное, а значения - частотность.
 
+* comparation -- выводит частотности существительных по паре прилагательных
 
 <b>NEW_NGRAMS:</b>
 

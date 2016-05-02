@@ -2,13 +2,13 @@
 
 import codecs, re, sys, time
 
-file1 = 'yellow_result_ngrams.tsv' #Заменить
-file2 = 'yellowish_result_ngrams.tsv' #Заменить
+file1 = './results/rot_result_ngrams.tsv' #Заменить
+file2 = './results/rotlich_result_ngrams.tsv' #Заменить
 
-adj1 = u'yellow'#Заменить
-adj2 = u'yellowish'#Заменить
+adj1 = u'rot'#Заменить
+adj2 = u'rotlich'#Заменить
 
-adj_root_tr = 'ye_ye'#Заменить
+adj_root_tr = 'ro_ro'#Заменить
 
 					
 
@@ -37,7 +37,7 @@ f1.close()
 f2.close()
 		
 ##Запись в файл result_lines_selector.tsv строк в формате " прилагательное существительное число вхождений" (отсортированно)
-w = codecs.open(adj_root_tr + '_result_comparation.csv', 'w', 'utf-8')
+w = codecs.open('./comparation/' + adj_root_tr + '_result_comparation.csv', 'w', 'utf-8')
 w.write('существительное' + ',' + str(adj1) + ',' + str(adj2) + '\r\n')
 for noun in result:
 	w.write(noun + ',' + str(dict1[noun]) + ',' + str(dict2[noun]) + '\r\n')

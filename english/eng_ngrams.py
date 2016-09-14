@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import codecs, re, sys, time
+import codecs
 
-#pip install nltk
-#import nltk
-#nltk.download()
 from nltk.stem.wordnet import WordNetLemmatizer
-lmtzr = WordNetLemmatizer()
-#lmtzr.lemmatize('cars')
 
-adj_root = u'humid'#Заменить
+lmtzr = WordNetLemmatizer()
+
+adj_root = u'humid'  # Заменить
 result_lines_selector = adj_root + '_result_lines_selector.tsv'
 
 
@@ -22,7 +19,7 @@ def create_result_dict(result_lines_selector):
 	result_lines_selector = codecs.open(result_lines_selector, 'r', 'utf-8')
 	result_dict = {}
 	for line in result_lines_selector:
-		splited_line = line.split() #делит строку на пару прил сущ и частотность
+		splited_line = line.split() # Делит строку на пару прил сущ и частотность
 		adj = splited_line[0]
 		noun = splited_line[1]
 		freq = splited_line[2]
@@ -35,7 +32,7 @@ def create_result_dict(result_lines_selector):
 
 result_dict = create_result_dict(result_lines_selector)
 
-#Финальная запись в файл
+# Финальная запись в файл
 result = codecs.open(adj_root + '_result_ngrams.tsv', 'w', 'utf-8')
 for i in sorted(result_dict, key=result_dict.get, reverse=True):
 	result.write(i +'\t'+ str(result_dict[i]) + '\r\n')

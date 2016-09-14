@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import codecs, re, sys, time
+import codecs
 
 file1 = './results/damp_result_ngrams.tsv' 		# Заменить
 file2 = './results/humid_result_ngrams.tsv' 	# Заменить

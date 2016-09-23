@@ -2,6 +2,8 @@
 
 <b>КАК ПОЛЬЗОВАТЬСЯ КОДОМ?:</b>
 
+Код написан на Python 3
+
 Препроцессинг
 
 1. Сперва нужно скопироварь репозиторий: git clone https://github.com/Shakurova/ngrams.git

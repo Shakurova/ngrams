@@ -1,34 +1,22 @@
-# -*- coding: utf-8 -*-
+# # -*- coding: utf-8 -*-
 
 import codecs
 import sys
 
-googlefile = u'googlebooks-rus-all-2gram-20120701-mo' # Заменить
-arr = []
-dictionary = {}
-translit = { u'а':u'a', u'б':u'b', u'в':u'v', u'г':u'g', u'д':u'd',
-					u'е':u'e', u'ж':u'zh', u'з':u'z', u'и':u'i', u'й':u'j',
-					u'к':u'k', u'л':u'l', u'м':u'm', u'н':u'n', u'о':u'o',
-					u'п':u'p', u'р':u'r', u'с':u's', u'т':u't', u'у':u'u',
-					u'ф':u'f', u'х':u'h', u'ц':u'ts', u'ч':u'ch', u'ш':u'sh',
-					u'щ':u'sch', u'ь':u'', u'ы':u'y', u'ъ':u'', u'э':u'e',
-					u'ю':u'yu', u'я':u'ya' }
-
-adj_root = u'мокрый' # Заменить
-adj_root_tr = ''.join([translit[i] for i in list(adj_root)])
-
 trash = [u'«', u'»', u'_NOUN_', u',', u'.', u'!', u')', u'*', u'"', u':', u'-', u'--', u';', u'...', u'?',  u'(']
 
 
-def lines_selector(googlefile):
+def lines_selector(googlefile1, osnova1):
 	"""
 	Получает на вход название файла, содержащего биграммы из google ngrams, год, количество вхождений, число книг в этот год.
 	Возвращает массив, состоящий из строк, содержащих корень заданного прилагательного и теги _ADJ и _NOUN.
 	"""
-	count_line = 0 # Количество обработанных строк
-	f = codecs.open(googlefile, 'r', 'utf-8')
+	print ('lines_selector')
+	arr = []  # вынести внутрь функций
+	count_line = 0  # Количество обработанных строк
+	f = codecs.open(googlefile1, 'r', 'utf-8')
 	for line in f:
-		if u'мокр' in line: # Заменить
+		if osnova1 in line: # Заменить
 			if u'ADJ' in line:
 				if u'NOUN' in line:
 					# sys.stdout.write(line) # Строки, содержащие корень нужного прилагательного
@@ -46,6 +34,8 @@ def frequency(arr):
 	Проверяет порядок слов (прилагательное существительное).
 	Создает словарь dictionary, где ключи - существительное прилагательное, а значения - частотность.
 	"""
+	print ('frequency')
+	dictionary = {}  # вынести внутрь функций
 	for line in arr:
 		if line.split()[1].split('_')[0].isalpha() and line.split()[1].split('_')[0] not in trash:
 			splited_line = line.split()
@@ -57,11 +47,21 @@ def frequency(arr):
 					dictionary[pair_adj_noun] += int(splited_line[3])
 	return (dictionary)
 
-arr = lines_selector(googlefile)
-dictionary = frequency(arr)
 
-# Запись в файл result_lines_selector.tsv строк в формате " прилагательное существительное число вхождений" (отсортированно)
-w = codecs.open(adj_root_tr + '_result_lines_selector.tsv', 'w', 'utf-8')
-for i in sorted(dictionary, key=dictionary.get, reverse=True):
-	w.write(i +'\t'+ str(dictionary[i]) + '\r\n')
-w.close()
+def write_in_file(googlefile1, adj_root_tr, osnova1):
+	"""
+	Запись в файл result_lines_selector.tsv строк в формате " прилагательное
+	существительное число вхождений" (отсортированно)
+	"""
+	print ('write_in_file')
+	arr = lines_selector(googlefile1, osnova1)
+	dictionary = frequency(arr)
+	w = codecs.open('./results/' + adj_root_tr + '_result_lines_selector.tsv', 'w', 'utf-8')
+	for i in sorted(dictionary, key=dictionary.get, reverse=True):
+		w.write(i +'\t' + str(dictionary[i]) + '\r\n')
+	w.close()
+
+# print u'ru_lines_selector для первого прилагательного'
+# adj_root1 = ru_config.adj_root1
+# adj_root_tr1 = ''.join([translit[i] for i in list(adj_root1)])
+# write_in_file(ru_config.googlefile1, adj_root_tr1, osnova1)

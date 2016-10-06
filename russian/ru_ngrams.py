@@ -120,6 +120,9 @@ def create_result_dict(result_lines_selector, dictionary_gram):
 
 
 def write_in_file_final(result_lines_selector, mystem_result, adj_root_tr, adj_root1):
+	"""
+	Запись в файл.
+	"""
 	print('\nЗапуск функции write_in_file_final...')
 	dictionary_gram = write_in_file_middle(mystem_result, adj_root_tr, adj_root1)
 	result_dict = create_result_dict(result_lines_selector, dictionary_gram)

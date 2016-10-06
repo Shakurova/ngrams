@@ -12,7 +12,7 @@ def lines_selector(googlefile1, osnova1):
 	Возвращает массив, состоящий из строк, содержащих корень заданного прилагательного и теги _ADJ и _NOUN.
 	"""
 	print('\nЗапуск функции lines_selector...')
-	arr = []  # вынести внутрь функций
+	arr = []
 	count_line = 0  # Количество обработанных строк
 	f = codecs.open(googlefile1, 'r', 'utf-8')
 	for line in f:
@@ -35,7 +35,7 @@ def frequency(arr):
 	Создает словарь dictionary, где ключи - существительное прилагательное, а значения - частотность.
 	"""
 	print('\nЗапуск функции frequency...')
-	dictionary = {}  # вынести внутрь функций
+	dictionary = {}
 	for line in arr:
 		if line.split()[1].split('_')[0].isalpha() and line.split()[1].split('_')[0] not in trash:
 			splited_line = line.split()

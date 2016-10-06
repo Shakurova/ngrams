@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import os
-
 import eng_config
 import eng_lines_selector
 import eng_ngrams

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import os
-
 import ge_config
 import ge_lines_selector
 import ge_ngrams

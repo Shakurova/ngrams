@@ -59,7 +59,7 @@ def write_down_result(file1, file2, transl, adj_root1, adj_root2):
 	f2.close()
 
 	w = codecs.open('./results/' + transl + '_result_0_comparation.csv', 'w', 'utf-8')
-	w.write('noun' + ',' + str(adj_root1) + ',' + str(adj_root2) + ',' + 'colour' + ',' + 'code' + '\r\n')
+	w.write('noun' + ',' + str(adj_root1) + ',' + str(adj_root2) + '\r\n')
 	for noun in result:
 		w.write(noun + ',' + str(dict1[noun]) + ',' + str(dict2[noun]) + '\r\n')  # str(noundicti[noun])
 	for noun in result_arr1:

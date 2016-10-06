@@ -27,11 +27,11 @@ languages = {'русский': 'russian',
 print(u'\nЗапуск функции ru_lines_selector для первого прилагательного...')
 adj_root1 = ru_config.adj_root1
 adj_root_tr1 = ''.join([translit[i] for i in list(adj_root1)])
-ru_lines_selector.write_in_file(ru_config.googlefile1, adj_root_tr1, ru_config.osnova1)
+# ru_lines_selector.write_in_file(ru_config.googlefile1, adj_root_tr1, ru_config.osnova1)
 print(u'\nЗапуск функции ru_lines_selector для второго прилагательного...')
 adj_root2 = ru_config.adj_root2
 adj_root_tr2 = ''.join([translit[i] for i in list(adj_root2)])
-ru_lines_selector.write_in_file(ru_config.googlefile2, adj_root_tr2, ru_config.osnova2)
+# ru_lines_selector.write_in_file(ru_config.googlefile2, adj_root_tr2, ru_config.osnova2)
 
 print(u'\nЗапуск MyStem для первого прилагательного...')
 result_lines_selector1 = './results/' + adj_root_tr1 + '_result_lines_selector.tsv'
@@ -58,6 +58,7 @@ ru_comparation_with_0.write_down_result(file1, file2, transl, adj_root1, adj_roo
 # TO-DO
 # для всех raw input проделать все действия, описанные выше (чтобы если человек хотел сделать выборку
 # только по одному, он бы делал по одному, а если компарэйшн, то тоже пожалуйста)
+# уменьшить количество выводимых файлов
 # language = input("Выбериите язык: русский, английский или немецкий-  ")
 
 # root = Tkinter.Tk()

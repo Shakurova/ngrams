@@ -11,7 +11,7 @@ def lines_selector(googlefile1, osnova1):
 	Получает на вход название файла, содержащего биграммы из google ngrams, год, количество вхождений, число книг в этот год.
 	Возвращает массив, состоящий из строк, содержащих корень заданного прилагательного и теги _ADJ и _NOUN.
 	"""
-	print ('lines_selector')
+	print('\nЗапуск функции lines_selector...')
 	arr = []  # вынести внутрь функций
 	count_line = 0  # Количество обработанных строк
 	f = codecs.open(googlefile1, 'r', 'utf-8')
@@ -34,7 +34,7 @@ def frequency(arr):
 	Проверяет порядок слов (прилагательное существительное).
 	Создает словарь dictionary, где ключи - существительное прилагательное, а значения - частотность.
 	"""
-	print ('frequency')
+	print('\nЗапуск функции frequency...')
 	dictionary = {}  # вынести внутрь функций
 	for line in arr:
 		if line.split()[1].split('_')[0].isalpha() and line.split()[1].split('_')[0] not in trash:
@@ -53,12 +53,12 @@ def write_in_file(googlefile1, adj_root_tr, osnova1):
 	Запись в файл result_lines_selector.tsv строк в формате " прилагательное
 	существительное число вхождений" (отсортированно)
 	"""
-	print ('write_in_file')
+	print('\nЗапись функции write_in_file...')
 	arr = lines_selector(googlefile1, osnova1)
 	dictionary = frequency(arr)
 	w = codecs.open('./results/' + adj_root_tr + '_result_lines_selector.tsv', 'w', 'utf-8')
 	for i in sorted(dictionary, key=dictionary.get, reverse=True):
-		w.write(i +'\t' + str(dictionary[i]) + '\r\n')
+		w.write(i + '\t' + str(dictionary[i]) + '\r\n')
 	w.close()
 
 # print u'ru_lines_selector для первого прилагательного'

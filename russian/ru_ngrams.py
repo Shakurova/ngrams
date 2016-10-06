@@ -8,6 +8,7 @@ def create_dictionary_gram(mystem_result, adj_root1):
 	"""
 	Получает на вход файл с разбором из Mystem. Возвращает словарь dictionary_gram в формате прил сущ	[[прил инф, {разборы прил}], [сущ инф, {разборы сущ}]] и начальную форму сущ.
 	"""
+	print('\nЗапуск функции create_dictionary_gram...')
 	mystem_result = codecs.open(mystem_result, 'r', 'utf-8')
 	arr = []  # Массив строк из файла с разбором Mystem
 	dictionary_gram = {}  # Словарь с разборами прил и сущ
@@ -64,7 +65,7 @@ def create_dictionary_gram(mystem_result, adj_root1):
 
 
 def write_in_file_middle(mystem_result, adj_root_tr, adj_root1):
-	print ('write_in_file_middle')
+	print('\nЗапуск функции write_in_file_middle...')
 	dictionary_gram = create_dictionary_gram(mystem_result, adj_root1)  # , nouninf
 	# Промежуточная запись в файл словаря dictionary_gram
 	output = codecs.open('./results/' + adj_root_tr + '_gind_f_dictionary_mystem.tsv', 'w', 'utf-8')
@@ -79,6 +80,7 @@ def agreement(pair, dictionary_gram):
 	Получает на вход пару прилагательное существительное.
 	Возвращает True, если согласуется и False, если нет.
 	"""
+	print('\nЗапуск функции agreement...')
 	if pair in dictionary_gram:
 		for i in dictionary_gram[pair][1][1]:
 			if i in dictionary_gram[pair][0][1]:
@@ -95,6 +97,7 @@ def create_result_dict(result_lines_selector, dictionary_gram):
 	Проверяет согласованность прилагательного и существительного.
 	Возвращает словарь с лемматизированным существительным и частотностью.
 	"""
+	print('\nЗапуск функции create_result_dict...')
 	result_lines_selector = codecs.open(result_lines_selector, 'r', 'utf-8')
 	result_dict = {}
 	for line in result_lines_selector:
@@ -117,6 +120,7 @@ def create_result_dict(result_lines_selector, dictionary_gram):
 
 
 def write_in_file_final(result_lines_selector, mystem_result, adj_root_tr, adj_root1):
+	print('\nЗапуск функции write_in_file_final...')
 	dictionary_gram = write_in_file_middle(mystem_result, adj_root_tr, adj_root1)
 	result_dict = create_result_dict(result_lines_selector, dictionary_gram)
 	# Финальная запись в файл

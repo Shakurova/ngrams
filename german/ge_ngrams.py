@@ -4,33 +4,7 @@ import codecs
 import re
 import treetaggerwrapper
 
-# import os
-# os.environ['TREETAGGER'] = "/Users/elenashakurova/Desktop/ttg/cmd"
-# from treetagger import TreeTagger
-# tagger = TreeTagger(language='german')
-
 tagger = treetaggerwrapper.TreeTagger(TAGLANG='de', TAGDIR='/Users/elenashakurova/Desktop/ttg/')
-
-# adj_root = 'nass'
-#
-# result_lines_selector = ['nasser Flächen	57', 'nassem Filtrirpapier	23452345', 'nasse Einwicklungen	1345345']
-# for line in result_lines_selector:
-# 	splited_line = line.split('\t')             # делит строку на пару прил сущ и частотность
-# 	adj_noun = splited_line[0]
-# 	freq = splited_line[1]
-# 	# tags = tagger.tag_text(adj_noun)
-# 	# tags2 = treetaggerwrapper.make_tags(tags)
-# 	tags = tagger.tag_text(adj_noun)
-# 	tags2 = treetaggerwrapper.make_tags(tags)
-# 	print(tags)
-# 	print(tags2)
-# 	# tags2 = tagger.tag(adj_noun)
-# 	# print(tags2)
-# 	# if tags2[0][2] == adj_root:
-# 	# 	print(tags2[1][2])
-# 	if tags2[0][2].split("|")[0] == adj_root:  # проверяется лемма прилагательного
-# 		print(tags2[1][2].split("|")[0])
-
 
 ss = re.compile('ß')
 

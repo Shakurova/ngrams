@@ -9,18 +9,17 @@
 Для Python:
 
 1. pip install -r requirements.txt
-
 2. Если Вы хотите работать с немецким языком, Вам нужно будет установить модуль tretaggerwrapper. Для этого
 
-- Создать где-нибудь папку, перейти по ссылке http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/ и скачать в эту папку
+-- Создать где-нибудь папку, перейти по ссылке http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/ и скачать в эту папку
 
--- пакет анализатора для целевой системы: Linux (x86), Linux (x86_64), Mac OS X (Intel), Mac OS X (PowerPC), Solaris (SPARC);
+- пакет анализатора для целевой системы: Linux (x86), Linux (x86_64), Mac OS X (Intel), Mac OS X (PowerPC), Solaris (SPARC);
 
--- скрипты для разметки в директорию с пакетом анализатора (tagging scripts);
+- скрипты для разметки в директорию с пакетом анализатора (tagging scripts);
 
--- установочный скрипт install-tagger.sh;
+- установочный скрипт install-tagger.sh;
 
--- файлы параметров для немецкого языка (German parameter file (UTF-8));
+- файлы параметров для немецкого языка (German parameter file (UTF-8));
 
 -- открыть терминал, перейти в папку, где лежат все файлы, и запустить установочный скрипт install-tagger.sh, который распакует и сконфигурирует пакеты в текущую директорию
 

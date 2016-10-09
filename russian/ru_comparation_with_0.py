@@ -29,6 +29,7 @@ def common(file1, file2):
 	Получает на вход два файла в формате существительное частотность.
 	Возвращает массив, состоящий из общих существительных.
 	"""
+	print('\nЗапуск функции common...')
 	result = []
 	result_arr1 = []
 	result_arr2 = []
@@ -50,6 +51,7 @@ def common(file1, file2):
 
 
 def write_down_result(file1, file2, transl, adj_root1, adj_root2):
+	print('Запуск функции write_down_result...')
 	result, result_arr1, result_arr2 = common(file1, file2)
 	f1 = codecs.open(file1, 'r', 'utf-8')
 	f2 = codecs.open(file2, 'r', 'utf-8')
@@ -57,8 +59,8 @@ def write_down_result(file1, file2, transl, adj_root1, adj_root2):
 	dict2 = {line.split()[0]: line.split()[1] for line in f2}
 	f1.close()
 	f2.close()
-
-	w = codecs.open('./results/' + transl + '_result_0_comparation.csv', 'w', 'utf-8')
+	print('\nЗапись результатов сравнения в файл...')
+	w = codecs.open('./russian/results/' + transl + '_result_0_comparation.csv', 'w', 'utf-8')
 	w.write('noun' + ',' + str(adj_root1) + ',' + str(adj_root2) + '\r\n')
 	for noun in result:
 		w.write(noun + ',' + str(dict1[noun]) + ',' + str(dict2[noun]) + '\r\n')  # str(noundicti[noun])

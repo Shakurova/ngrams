@@ -2,7 +2,23 @@
 
 <b>КАК ПОЛЬЗОВАТЬСЯ КОДОМ?:</b>
 
+Если Вы хотите работать с немецким языком, Вам нужно будет установить модуль tretagger. Для этого
+1. Создать где-нибудь папку, перейти по ссылке http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/ и скачать в эту папку
+- пакет анализатора для целевой системы: Linux (x86), Linux (x86_64), Mac OS X (Intel), Mac OS X (PowerPC), Solaris (SPARC);
+- скрипты для разметки в директорию с пакетом анализатора (tagging scripts);
+- установочный скрипт install-tagger.sh;
+- файлы параметров для немецкого языка (German parameter file (UTF-8));
+- открыть терминал, перейти в папку, где лежат все файлы, и запустить установочный скрипт install-tagger.sh, который распакует и сконфигурирует пакеты в текущую директорию
+2. Далее, нужно склонировать репозиторий https://github.com/miotto/treetagger-python и в терминале написать python setup.py install
+
+export TREETAGGER_HOME='/path/to/your/TreeTagger/cmd/'
+
+Для R нужно установить
+install.packages("ggplot2")
+install.packages("plotly")
+
 Код написан на Python 3
+
 
 Препроцессинг
 

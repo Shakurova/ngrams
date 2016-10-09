@@ -1,29 +1,35 @@
 # -*- coding: utf-8 -*-
 
 import codecs
+import re
 import sys
 
+trash = ['«', '»', '_NOUN_', ',', '.', '!', ')', '*', '"', ':', '-', '--', ';', '...', '?',  '(']
 
-def lines_selector(googlefile):
+ss = re.compile('ß')
+
+def lines_selector(googlefile, adj_root):
 	"""
 	Получает на вход название файла, содержащего биграммы из google ngrams, год, количество вхождений,
 	число книг в этот год. Возвращает массив, состоящий из строк,
 	содержащих корень заданного прилагательного и теги _ADJ и _NOUN.
 	"""
 	print('\nЗапуск функции lines_selector...')
+	ss = re.compile('ß')
 	arr = []
-	count_line = 0 # Количество обработанных строк
-	f = codecs.open(googlefile, 'r', 'utf-8')#, 'utf-8'
-	for line in f:
-		if u'nass' in line or u'naß' in line: # Заменить
-			if u'ADJ' in line:
-				if u'NOUN' in line:
-					# sys.stdout.write(line) # Строки, содержащие корень нужного прилагательного
-					arr.append(line)
-					count_line += 1
-					if count_line % 2000 == 0:
-						sys.stdout.write(str(count_line) + '\r\n')
-	f.close()
+	count_line = 0  # Количество обработанных строк
+	with codecs.open(googlefile, 'r', 'utf-8') as f:
+		# arr = [ss.sub('ss', line) for line in f if adj_root in ss.sub('ss', line) if 'ADJ' in line if 'NOUN' in line]
+		for line in f:
+			# if u'nass' in line or u'naß' in line:  # Заменить !!!!!!
+			if adj_root in line or ss.sub('ss', adj_root) in line:  # Заменить !!!!!!
+				if 'ADJ' in line:
+					if 'NOUN' in line:
+						# sys.stdout.write(line) # Строки, содержащие корень нужного прилагательного
+						arr.append(line)
+						count_line += 1
+						if count_line % 2000 == 0:
+							sys.stdout.write(str(count_line) + '\r\n')
 	return (arr)
 
 
@@ -59,9 +65,8 @@ def write_in_file(googlefile, adj_root):
 	существительное число вхождений" (отсортированно)
 	"""
 	print('\nЗапись функции write_in_file...')
-	arr = lines_selector(googlefile)
+	arr = lines_selector(googlefile, adj_root)
 	dictionary = frequency(arr)
-	w = codecs.open(adj_root + '_result_lines_selector.tsv', 'w', 'utf-8')
-	for i in sorted(dictionary, key=dictionary.get, reverse=True):
-		w.write(i + '\t' + str(dictionary[i]) + '\r\n')
-	w.close()
+	with codecs.open('./german/results_middle/' + adj_root + '_result_lines_selector.tsv', 'w', 'utf-8') as w:
+		for i in sorted(dictionary, key=dictionary.get, reverse=True):
+			w.write(i + '\t' + str(dictionary[i]) + '\r\n')

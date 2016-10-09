@@ -14,17 +14,17 @@ def lines_selector(googlefile1, osnova1):
 	print('\nЗапуск функции lines_selector...')
 	arr = []
 	count_line = 0  # Количество обработанных строк
-	f = codecs.open(googlefile1, 'r', 'utf-8')
-	for line in f:
-		if osnova1 in line: # Заменить
-			if u'ADJ' in line:
-				if u'NOUN' in line:
-					# sys.stdout.write(line) # Строки, содержащие корень нужного прилагательного
-					arr.append(line)
-					count_line += 1
-					if count_line % 2000 == 0:
-						sys.stdout.write(str(count_line) + '\r\n')
-	f.close()
+	with codecs.open(googlefile1, 'r', 'utf-8') as f:
+		# arr = [line for line in f if osnova1 in line if u'ADJ' in line if u'NOUN' in line]
+		for line in f:
+			if osnova1 in line:  # Заменить
+				if u'ADJ' in line:
+					if u'NOUN' in line:
+						# sys.stdout.write(line) # Строки, содержащие корень нужного прилагательного
+						arr.append(line)
+						count_line += 1
+						if count_line % 2000 == 0:
+							sys.stdout.write(str(count_line) + '\r\n')
 	return (arr)
 
 
@@ -56,7 +56,7 @@ def write_in_file(googlefile1, adj_root_tr, osnova1):
 	print('\nЗапись функции write_in_file...')
 	arr = lines_selector(googlefile1, osnova1)
 	dictionary = frequency(arr)
-	w = codecs.open('./results/' + adj_root_tr + '_result_lines_selector.tsv', 'w', 'utf-8')
+	w = codecs.open('./russian/results_middle/' + adj_root_tr + '_result_lines_selector.tsv', 'w', 'utf-8')
 	for i in sorted(dictionary, key=dictionary.get, reverse=True):
 		w.write(i + '\t' + str(dictionary[i]) + '\r\n')
 	w.close()

@@ -61,17 +61,17 @@ def create_dictionary_gram(mystem_result, adj_root1):
 			if adjinf == adj_root1:  # Проверить начальную форму!!!
 				dictionary_gram[keydict] = [[adjinf, set(adjgram)], [nouninf, set(noungram)]]  # Начальная форма
 	mystem_result.close()
-	return (dictionary_gram)  # , nouninfсловарь и начальная форма существительного
+	return dictionary_gram  # , nouninfсловарь и начальная форма существительного
 
 
 def write_in_file_middle(mystem_result, adj_root_tr, adj_root1):
 	print('\nЗапуск функции write_in_file_middle...')
 	dictionary_gram = create_dictionary_gram(mystem_result, adj_root1)  # , nouninf
-	# Промежуточная запись в файл словаря dictionary_gram
-	output = codecs.open('./results/' + adj_root_tr + '_gind_f_dictionary_mystem.tsv', 'w', 'utf-8')
-	for i in dictionary_gram:
-		output.write(i + '\t' + str(dictionary_gram[i]) + '\r\n')
-	output.close()
+	# # Промежуточная запись в файл словаря dictionary_gram
+	# output = codecs.open('./results_middle/' + adj_root_tr + '_gind_dictionary_mystem.tsv', 'w', 'utf-8')
+	# for i in dictionary_gram:
+	# 	output.write(i + '\t' + str(dictionary_gram[i]) + '\r\n')
+	# output.close()
 	return dictionary_gram
 
 
@@ -80,12 +80,11 @@ def agreement(pair, dictionary_gram):
 	Получает на вход пару прилагательное существительное.
 	Возвращает True, если согласуется и False, если нет.
 	"""
-	print('\nЗапуск функции agreement...')
 	if pair in dictionary_gram:
 		for i in dictionary_gram[pair][1][1]:
 			if i in dictionary_gram[pair][0][1]:
 				return (True)
-				break  # ЭТО НОВОЕ, ЧТО ИСПРАВИЛА + убрала False
+				break
 			else:
 				# print (pair)
 				continue
@@ -103,6 +102,7 @@ def create_result_dict(result_lines_selector, dictionary_gram):
 	for line in result_lines_selector:
 		splited_line = line.split('\t')  # Делит строку на пару прил сущ и частотность
 		pair = splited_line[0]
+		print('\nЗапуск функции agreement...')
 		if agreement(pair, dictionary_gram):
 			# if pair in dictionary_gram:
 			if dictionary_gram[pair][1][0] not in result_dict:
@@ -110,8 +110,8 @@ def create_result_dict(result_lines_selector, dictionary_gram):
 			else:
 				result_dict[dictionary_gram[pair][1][0]] += int(splited_line[1])
 		else:
-			if pair in dictionary_gram:
-				print (pair)
+			# if pair in dictionary_gram:
+			# 	print(pair)
 			continue
 		# else:
 		# continue
@@ -127,7 +127,7 @@ def write_in_file_final(result_lines_selector, mystem_result, adj_root_tr, adj_r
 	dictionary_gram = write_in_file_middle(mystem_result, adj_root_tr, adj_root1)
 	result_dict = create_result_dict(result_lines_selector, dictionary_gram)
 	# Финальная запись в файл
-	result = codecs.open('./results/' + adj_root_tr + '_gind_f_result_ngrams.tsv', 'w', 'utf-8')
+	result = codecs.open('./russian/results/' + adj_root_tr + '_result_ngrams.tsv', 'w', 'utf-8')
 	for i in sorted(result_dict, key=result_dict.get, reverse=True):
 		result.write(i + '\t' + str(result_dict[i]) + '\r\n')
 	result.close()

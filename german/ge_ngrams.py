@@ -4,7 +4,7 @@ import codecs
 import re
 import treetaggerwrapper
 
-tagger = treetaggerwrapper.TreeTagger(TAGLANG='de', TAGDIR='/Users/elenashakurova/Desktop/ttg/')
+tagger = treetaggerwrapper.TreeTagger(TAGLANG='de', TAGDIR=trtg)
 
 ss = re.compile('ß')
 

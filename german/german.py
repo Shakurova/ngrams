@@ -11,7 +11,7 @@ import german.ge_comparation as ge_comparation
 # from tkinter.filedialog import askopenfilename
 
 
-def main(adj_root1, adj_root2, googlefile1, googlefile2):
+def main(adj_root1, adj_root2, googlefile1, googlefile2, trtg):
 	if os.path.exists('./german/results/'):
 		pass
 	else:
@@ -31,9 +31,9 @@ def main(adj_root1, adj_root2, googlefile1, googlefile2):
 	result_lines_selector2 = './german/results_middle/' + adj_root2 + '_result_lines_selector.tsv'
 
 	print(u'\nЗапуск функции ge_ngrams для первого прилагательного...')
-	ge_ngrams.write_in_file_final(result_lines_selector1, adj_root1)
+	ge_ngrams.write_in_file_final(result_lines_selector1, adj_root1, trtg)
 	print(u'\nЗапуск функции ge_ngrams для второго прилагательного...')
-	ge_ngrams.write_in_file_final(result_lines_selector2, adj_root2)
+	ge_ngrams.write_in_file_final(result_lines_selector2, adj_root2, trtg)
 
 	transl = adj_root1[:2] + '_' + adj_root2[:2]
 

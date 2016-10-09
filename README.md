@@ -11,6 +11,7 @@
 1. pip install -r requirements.txt
 2. Если Вы хотите работать с немецким языком, Вам нужно будет скачать mystem. Для этого нужно перейти по ссылке https://tech.yandex.ru/mystem/, скачать версию 3.0 и положить в папку с проектом (ngrams)
 3. Если Вы хотите работать с немецким языком, Вам нужно будет скачать tretagger. Для этого
+
 - Создать где-нибудь папку, перейти по ссылке http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/ и скачать в эту папку
 
 - пакет анализатора для целевой системы: Linux (x86), Linux (x86_64), Mac OS X (Intel), Mac OS X (PowerPC), Solaris (SPARC);

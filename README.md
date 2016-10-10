@@ -11,7 +11,7 @@
 
 Код написан на Python3.5 (https://www.python.org/downloads/)
 
-Для построения графиков должен быть скачан R (https://cran.r-project.org/mirrors.html)
+Для построения графиков должен быть скачан R (http://cran.gis-lab.info/)
 
 <b>УСТАНОВКА НЕОБХОДИМЫХ МОДУЛЕЙ И ПРОГРАММ:</b>
 

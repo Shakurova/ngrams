@@ -6,7 +6,8 @@ import sys
 
 trash = ['«', '»', '_NOUN_', ',', '.', '!', ')', '*', '"', ':', '-', '--', ';', '...', '?',  '(']
 
-ss = re.compile('ß')
+sss = re.compile('ss')
+
 
 def lines_selector(googlefile, adj_root):
 	"""
@@ -15,22 +16,21 @@ def lines_selector(googlefile, adj_root):
 	содержащих корень заданного прилагательного и теги _ADJ и _NOUN.
 	"""
 	print('\nЗапуск функции lines_selector...')
-	ss = re.compile('ß')
 	arr = []
-	count_line = 0  # Количество обработанных строк
+	count_line = 0  # Счетчик количества обработанных строк
 	with codecs.open(googlefile, 'r', 'utf-8') as f:
 		# arr = [ss.sub('ss', line) for line in f if adj_root in ss.sub('ss', line) if 'ADJ' in line if 'NOUN' in line]
+		adj_root_sss = sss.sub('ß', adj_root)  # ss заменяется на ß
 		for line in f:
-			# if u'nass' in line or u'naß' in line:  # Заменить !!!!!!
-			if adj_root in line or ss.sub('ss', adj_root) in line:  # Заменить !!!!!!
+			if adj_root in line or adj_root_sss in line:
 				if 'ADJ' in line:
 					if 'NOUN' in line:
-						# sys.stdout.write(line) # Строки, содержащие корень нужного прилагательного
+						# sys.stdout.write(line)  # Строки, содержащие корень нужного прилагательного
 						arr.append(line)
 						count_line += 1
 						if count_line % 2000 == 0:
 							sys.stdout.write(str(count_line) + '\r\n')
-	return (arr)
+	return arr
 
 
 def frequency(arr):
@@ -45,18 +45,12 @@ def frequency(arr):
 		if line.split()[1].split('_')[0].isalpha() and line.split()[1].split('_')[0] not in trash:
 			splited_line = line.split()
 			pair_adj_noun = splited_line[0].split('_')[0] + ' ' + splited_line[1].split('_')[0]
-			if splited_line[0].split('_')[1] == 'ADJ': # проверка порядка слов
+			if splited_line[0].split('_')[1] == 'ADJ':  # проверка порядка слов (первое слово - прилагательное)
 				if pair_adj_noun not in dictionary:
 					dictionary[pair_adj_noun] = int(splited_line[3])
 				else:
 					dictionary[pair_adj_noun] += int(splited_line[3])
 	return (dictionary)
-
-# # Запись в файл prepfile.tsv строк, содержащих нужное прилагательное
-# prepfile = codecs.open(adj_root + '_prepfile.tsv', 'w', 'utf-8')
-# for aa in arr:
-#   prepfile.write(aa)
-# prepfile.close()
 
 
 def write_in_file(googlefile, adj_root):
@@ -69,4 +63,4 @@ def write_in_file(googlefile, adj_root):
 	dictionary = frequency(arr)
 	with codecs.open('./german/results_middle/' + adj_root + '_result_lines_selector.tsv', 'w', 'utf-8') as w:
 		for i in sorted(dictionary, key=dictionary.get, reverse=True):
-			w.write(i + '\t' + str(dictionary[i]) + '\r\n')
+			w.write(re.sub('ß', 'ss', i) + '\t' + str(dictionary[i]) + '\r\n')     # здесь делать замену  на ss !!!!!!!!!!!!!!!!

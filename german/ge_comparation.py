@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import re
 import codecs
 
 
@@ -35,7 +36,7 @@ def write_down_result(file1, file2, adj_root_tr, adj_root1, adj_root2):
 	f1.close()
 	f2.close()
 
-	with codecs.open('./german/results/' + adj_root_tr + '_result_comparation.csv', 'w', 'utf-8') as w:
+	with codecs.open('./german/results/' + adj_root_tr + '_result_0_comparation.csv', 'w', 'utf-8') as w:
 		w.write('noun' + ',' + str(adj_root1) + ',' + str(adj_root2) + '\r\n')
 		for noun in result:
 			w.write(noun + ',' + str(dict1[noun]) + ',' + str(dict2[noun]) + '\r\n')

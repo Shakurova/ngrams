@@ -48,6 +48,7 @@
 
 1. install.packages("ggplot2")
 2. install.packages("plotly")
+3. Установить Pandoc http://pandoc.org/installing.html
 
 
 

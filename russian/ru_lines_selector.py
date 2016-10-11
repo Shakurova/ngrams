@@ -3,7 +3,7 @@
 import codecs
 import sys
 
-trash = [u'«', u'»', u'_NOUN_', u',', u'.', u'!', u')', u'*', u'"', u':', u'-', u'--', u';', u'...', u'?',  u'(']
+TRASH = [u'«', u'»', u'_NOUN_', u',', u'.', u'!', u')', u'*', u'"', u':', u'-', u'--', u';', u'...', u'?',  u'(']
 
 
 def lines_selector(googlefile1, osnova1):
@@ -13,11 +13,11 @@ def lines_selector(googlefile1, osnova1):
 	"""
 	print('\nЗапуск функции lines_selector...')
 	arr = []
-	count_line = 0  # Количество обработанных строк
+	count_line = 0  # Счетчик количества обработанных строк
 	with codecs.open(googlefile1, 'r', 'utf-8') as f:
 		# arr = [line for line in f if osnova1 in line if u'ADJ' in line if u'NOUN' in line]
 		for line in f:
-			if osnova1 in line:  # Заменить
+			if osnova1 in line:
 				if u'ADJ' in line:
 					if u'NOUN' in line:
 						# sys.stdout.write(line) # Строки, содержащие корень нужного прилагательного
@@ -37,10 +37,10 @@ def frequency(arr):
 	print('\nЗапуск функции frequency...')
 	dictionary = {}
 	for line in arr:
-		if line.split()[1].split('_')[0].isalpha() and line.split()[1].split('_')[0] not in trash:
+		if line.split()[1].split('_')[0].isalpha() and line.split()[1].split('_')[0] not in TRASH:
 			splited_line = line.split()
 			pair_adj_noun = splited_line[0].split('_')[0] + ' ' + splited_line[1].split('_')[0]
-			if splited_line[0].split('_')[1] == 'ADJ': # Проверка порядка слов
+			if splited_line[0].split('_')[1] == 'ADJ':  # Проверка порядка слов
 				if pair_adj_noun not in dictionary:
 					dictionary[pair_adj_noun] = int(splited_line[3])
 				else:
@@ -60,8 +60,3 @@ def write_in_file(googlefile1, adj_root_tr, osnova1):
 	for i in sorted(dictionary, key=dictionary.get, reverse=True):
 		w.write(i + '\t' + str(dictionary[i]) + '\r\n')
 	w.close()
-
-# print u'ru_lines_selector для первого прилагательного'
-# adj_root1 = ru_config.adj_root1
-# adj_root_tr1 = ''.join([translit[i] for i in list(adj_root1)])
-# write_in_file(ru_config.googlefile1, adj_root_tr1, osnova1)

@@ -16,14 +16,14 @@ def create_result_dict(result_lines_selector):
 	result_lines_selector = codecs.open(result_lines_selector, 'r', 'utf-8')
 	result_dict = {}
 	for line in result_lines_selector:
-		splited_line = line.split() # Делит строку на пару прил сущ и частотность
+		splited_line = line.split()                     # делит строку на пару прил+сущ и частотность
 		adj = splited_line[0]
 		noun = splited_line[1]
-		freq = splited_line[2]
-		if lmtzr.lemmatize(noun) not in result_dict:
-			result_dict[lmtzr.lemmatize(noun)] = int(splited_line[2])
+		freq = splited_line[2]                          # частотность
+		if lmtzr.lemmatize(noun) not in result_dict:    # лемматизация существительного
+			result_dict[lmtzr.lemmatize(noun)] = int(freq)
 		else:
-			result_dict[lmtzr.lemmatize(noun)] += int(splited_line[2])
+			result_dict[lmtzr.lemmatize(noun)] += int(freq)
 	result_lines_selector.close()
 	return (result_dict)
 

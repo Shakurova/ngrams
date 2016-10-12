@@ -7,7 +7,7 @@ import english.eng_ngrams as eng_ngrams
 import english.eng_comparation as eng_comparation
 
 
-def main(adj_root1, adj_root2, googlefile1, googlefile2):
+def main(adj_root1, adj_root2, googlefile1, googlefile2, translate):
 	if os.path.exists('./english/results/'):
 		pass
 	else:
@@ -33,4 +33,9 @@ def main(adj_root1, adj_root2, googlefile1, googlefile2):
 
 	file1 = './english/results/' + adj_root1 + '_result_ngrams.tsv'
 	file2 = './english/results/' + adj_root2 + '_result_ngrams.tsv'
-	eng_comparation.write_down_result(file1, file2, transl, adj_root1, adj_root2)
+
+	if translate == 'да':
+		api_key = input('Введите свой API ключ (например, trnsl.1.1.20161012T130742Z.65cdcdc3ed0fb1e1.5c685da1cf0b0b1d0e73e5ff51990b947daa569e: ')
+		eng_comparation.write_down_result_tr(file1, file2, transl, adj_root1, adj_root2, api_key)
+	elif translate == 'нет':
+		eng_comparation.write_down_result(file1, file2, transl, adj_root1, adj_root2)

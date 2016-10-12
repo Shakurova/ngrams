@@ -1,0 +1,33 @@
+Красивейший{красивый=A=(вин,ед,полн,прев,муж,неод|им,ед,полн,прев,муж)}
+величайших{великий=A=(пр,мн,полн,прев|вин,мн,полн,прев,од|род,мн,полн,прев)}
+Лучше{хорошо=ADV=срав,вводн}
+Красивее{красивый=A=срав}
+Умнее{умный=A=срав}
+В русском степени лемматизируются до начальной форме
+
+
+
+print(lmtzr.lemmatize('bigger'))
+print(lmtzr.lemmatize('biggest'))
+print(lmtzr.lemmatize('were'))
+print(lmtzr.lemmatize('cats'))
+print(lmtzr.lemmatize('done'))
+
+bigger
+biggest
+were
+cat
+done
+
+В английском - нет
+
+В немецком приводятся к начальной форме, причем, из тегов нельзя вытащить, была ли там степень или не было
+
+tagger = treetaggerwrapper.TreeTagger(TAGLANG='de', TAGDIR='/Users/elenashakurova/Desktop/ttg/')
+print(tagger.tag_text('besser'))
+print(treetaggerwrapper.make_tags(tagger.tag_text('besser')))
+print(tagger.tag_text('am besten'))
+
+['besser\tADJD\tgut']
+[Tag(word='besser', pos='ADJD', lemma='gut')]
+['am\tPTKA\tam', 'besten\tADJD\tgut']

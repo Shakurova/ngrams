@@ -38,7 +38,6 @@ def write_in_file_final(result_lines_selector, adj_root, TRTG):
 	"""
 	print('\nЗапуск функции write_in_file_final...')
 	result_dict = create_result_dict(result_lines_selector, adj_root, TRTG)
-	with codecs.open('./german/results/' + adj_root
-			                 + '_result_ngrams.tsv', 'w', 'utf-8') as result:
+	with codecs.open('./german/results/' + adj_root + '_result_ngrams.tsv', 'w', 'utf-8') as result:
 		for i in sorted(result_dict, key=result_dict.get, reverse=True):
 			result.write(i + '\t' + str(result_dict[i]) + '\r\n')

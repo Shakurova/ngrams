@@ -22,7 +22,9 @@ def lines_selector(googlefile, adj_root):
 		# arr = [ss.sub('ss', line) for line in f if adj_root in ss.sub('ss', line) if 'ADJ' in line if 'NOUN' in line]
 		adj_root_sss = sss.sub('ß', adj_root)  # ss заменяется на ß
 		for line in f:
+			# print(adj_root, adj_root_sss)
 			if adj_root in line or adj_root_sss in line:
+				# print(line)
 				if 'ADJ' in line:
 					if 'NOUN' in line:
 						# sys.stdout.write(line)  # Строки, содержащие корень нужного прилагательного

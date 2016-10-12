@@ -8,7 +8,7 @@ import german.ge_ngrams as ge_ngrams
 import german.ge_comparation as ge_comparation
 
 
-def main(adj_root1, adj_root2, googlefile1, googlefile2, TRTG):
+def main(adj_root1, adj_root2, googlefile1, googlefile2, TRTG, translate):
 	ss = re.compile('ß')  # все ß заменяются на ss
 	adj_root1 = ss.sub('ss', adj_root1)
 	adj_root2 = ss.sub('ss', adj_root2)
@@ -37,4 +37,9 @@ def main(adj_root1, adj_root2, googlefile1, googlefile2, TRTG):
 
 	file1 = './german/results/' + adj_root1 + '_result_ngrams.tsv'
 	file2 = './german/results/' + adj_root2 + '_result_ngrams.tsv'
-	ge_comparation.write_down_result(file1, file2, transl, adj_root1, adj_root2)
+
+	if translate == 'да':
+		api_key = input('Введите свой API ключ (например, trnsl.1.1.20161012T130742Z.65cdcdc3ed0fb1e1.5c685da1cf0b0b1d0e73e5ff51990b947daa569e: ')
+		ge_comparation.write_down_result_tr(file1, file2, transl, adj_root1, adj_root2, api_key)
+	elif translate == 'нет':
+		ge_comparation.write_down_result(file1, file2, transl, adj_root1, adj_root2)

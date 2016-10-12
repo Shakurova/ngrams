@@ -73,6 +73,7 @@ def agreement(pair, dictionary_gram):
 				return (True)
 				break
 			else:
+				print(i)
 				continue
 
 
@@ -88,7 +89,7 @@ def create_result_dict(result_lines_selector, dictionary_gram):
 	for line in result_lines_selector:
 		splited_line = line.split('\t')  # Делит строку на пару прил сущ и частотность
 		pair = splited_line[0]
-		print('\nЗапуск функции agreement...')
+		# print('\nЗапуск функции agreement...')
 		if agreement(pair, dictionary_gram):
 			if dictionary_gram[pair][1][0] not in result_dict:
 				result_dict[dictionary_gram[pair][1][0]] = int(splited_line[1])

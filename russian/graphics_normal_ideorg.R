@@ -20,7 +20,18 @@ p <- ggplot(pair, aes(x=log10(get(args[1])), y=log10(get(args[2]))), z=noun)+
 p
 dev.off()
 
-ggp <- ggplotly(p, tooltip = c('z'))
+
+vvv <- ggplot(pair, aes(x=log10(get(args[1])), y=log10(get(args[2])), z=noun))+
+  geom_point(size = 2)+
+  theme_bw()+ # hate that gray ggplot style
+  xlab(args[1])+
+  ylab(args[2])
+
+#ggplotly(tooltip = c("z"))
+
+ggp <- ggplotly(tooltip = c('z'))
+
+
 htmlwidgets::saveWidget(as.widget(ggp), paste(args[1], args[2], 'index.html', sep = "_"))
 
 
@@ -58,3 +69,5 @@ boxplot(x)
 
 print('Корреляция')
 cor(x,y)
+
+# понять, почему по немецкому до и после получились разные цифры

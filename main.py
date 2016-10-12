@@ -24,7 +24,7 @@ def built_graphic(language, adj_root1, adj_root2):
 			adj_root_tr2 = ''.join([TRANSLIT[i] for i in list(adj_root2)])
 			transl = adj_root_tr1[:2] + '_' + adj_root_tr2[:2]
 			print('./' + language + '/' + transl + '_result_0_comparation.csv')
-			os.system('/usr/local/bin/Rscript ./russian/graphics_normal_ideorg.R ' + adj_root_tr1 + ' ' + adj_root_tr2 + ' ' + './' + language + '/germasults/' + transl + '_result_0_comparation.csv')
+			os.system('/usr/local/bin/Rscript ./russian/graphics_normal_ideorg.R ' + adj_root_tr1 + ' ' + adj_root_tr2 + ' ' + './' + language + '/results/' + transl + '_result_0_comparation.csv')
 			print('Программа завершила свою работу!')
 	elif graphic == 'нет':
 		print('Программа завершила свою работу!')
@@ -63,7 +63,8 @@ def main():
 			googlefile1 = input("Введите путь к файлу с биграммами по первому прилагательному (например, ./german/data/googlebooks-ger-all-2gram-20120701-fe):  ")
 			googlefile2 = input("Введите путь к файлу с биграммами по второму прилагательному:  ")
 			TRTG = input("Введите путь к программе treetagger(например, /Users/elenashakurova/Desktop/ttg/): ")
-			german.german.main(adj_root1, adj_root2, googlefile1, googlefile2, TRTG)
+			translate = input("Сделать перевод? (да/нет):  ")
+			german.german.main(adj_root1, adj_root2, googlefile1, googlefile2, TRTG, translate)
 			built_graphic(language, adj_root1, adj_root2)
 		elif what_to_do == '2':
 			built_graphic(language, adj_root1, adj_root2)
@@ -76,9 +77,10 @@ def main():
 		adj_root2 = input("Введите второе прилагательное:  ")
 		what_to_do = input("Обработать данные? (Напишите 1)\nПостроить график? (Напишите 2)\nВведите число: ")
 		if what_to_do == '1':
-			googlefile1 = input("Введите путь к файлу с биграммами по первому прилагательному (например, ./englishhe/data/googlebooks-eng-all-2gram-20120701-we):  ")
+			googlefile1 = input("Введите путь к файлу с биграммами по первому прилагательному (например, ./english/data/googlebooks-eng-all-2gram-20120701-hu):  ")
 			googlefile2 = input("Введите путь к файлу с биграммами по второму прилагательному:  ")
-			english.english.main(adj_root1, adj_root2, googlefile1, googlefile2)
+			translate = input("Сделать перевод? (да/нет):  ")
+			english.english.main(adj_root1, adj_root2, googlefile1, googlefile2, translate)
 			built_graphic(language, adj_root1, adj_root2)
 		elif what_to_do == '2':
 			built_graphic(language, adj_root1, adj_root2)
@@ -87,3 +89,11 @@ def main():
 	else:
 		print('Вы ввели неправильный язык')
 main()
+
+
+# больше вариантов развития событий
+# может надо только сравнить?
+# перевод нужен?
+# а семантические группы?
+# добавить перевод не только в компаратион, но и в биграмс
+# посмотреть сравнительные степени: как лемматизируются

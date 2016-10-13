@@ -40,7 +40,7 @@
 
 - установочный скрипт install-tagger.sh;
 
-- файлы параметров для немецкого языка (German parameter file (UTF-8));
+- файлы параметров для немецкого языка (German parameter file (UTF-8)) и German chunker parameter file (UTF8) (ВНИМАНИЕ: файлы должны быть НЕРАЗАРХИВИРОВАННЫМИ)
 
 - открыть терминал, перейти в папку, где лежат все файлы, и запустить установочный скрипт install-tagger.sh, который распакует и сконфигурирует пакеты в текущую директорию
 
@@ -56,8 +56,6 @@
 1. install.packages("ggplot2")
 2. install.packages("plotly")
 3. Установить Pandoc http://pandoc.org/installing.html
-
-
 
 
 <b>ОПИСАНИЕ РАБОТЫ ПРОГРАММЫ:</b>

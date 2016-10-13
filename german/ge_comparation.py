@@ -79,7 +79,7 @@ def write_down_result_tr(file1, file2, adj_root_tr, adj_root1, adj_root2, api_ke
 	"""
 
 	from yandex_translate import YandexTranslate
-	
+
 	translate = YandexTranslate(api_key)
 
 	result, result_arr1, result_arr2 = common_tr(file1, file2)

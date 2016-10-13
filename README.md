@@ -49,6 +49,8 @@
 4. Если для немецкого или английского вы хотите сделать перевод, тогда нужно установить модуль pip install yandex.translate, зайти на сайт https://tech.yandex.com/keys/get/?service=trnsl
 и получить бесплатный API ключ.
 
+5. Для того, чтобы работать с английским языком, нужно скачать данные NLTK python -m nltk.downloader all
+
 <b>Для R:</b>
 
 1. install.packages("ggplot2")
